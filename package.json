@@ -17,6 +17,7 @@
     "@heroicons/react": "^2.2.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
+    "framer-motion": "^12.15.0",
     "http": "^0.0.1-security",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

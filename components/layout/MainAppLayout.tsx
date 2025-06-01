@@ -24,7 +24,7 @@ const MainAppLayout: React.FC = () => {
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-20 md:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 z-20 md:hidden animate-fade-in"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -41,7 +41,7 @@ const MainAppLayout: React.FC = () => {
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
         {/* Top Bar */}
-        <header className="bg-slate-800 border-b border-slate-700 shadow-md z-10">
+        <header className="bg-slate-800 border-b border-slate-700 shadow-md z-10 animate-fade-in">
           <div className="px-4 sm:px-6 py-3 flex items-center justify-between">
             <div className="flex items-center">
               <button
@@ -62,7 +62,7 @@ const MainAppLayout: React.FC = () => {
                 <button className="text-stone-300 hover:text-white p-2 rounded-md hover:bg-slate-700 transition-colors">
                   <BellIcon className="h-5 w-5" />
                   {notificationsCount > 0 && (
-                    <span className="absolute top-1 right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center">
+                    <span className="absolute top-1 right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center animate-pulse">
                       {notificationsCount}
                     </span>
                   )}
@@ -88,7 +88,7 @@ const MainAppLayout: React.FC = () => {
                   <span className="hidden sm:inline">{user?.name || 'User'}</span>
                 </button>
                 
-                <div className="absolute right-0 mt-1 w-48 bg-slate-800 border border-slate-700 rounded-md shadow-lg py-1 z-50 hidden group-hover:block">
+                <div className="absolute right-0 mt-1 w-48 bg-slate-800 border border-slate-700 rounded-md shadow-lg py-1 z-50 hidden group-hover:block animate-fade-in">
                   <button
                     onClick={logout}
                     className="w-full text-left px-4 py-2 text-sm text-stone-300 hover:bg-slate-700 hover:text-white flex items-center"

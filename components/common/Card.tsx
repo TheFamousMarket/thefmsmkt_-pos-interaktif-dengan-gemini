@@ -12,6 +12,7 @@ interface CardProps {
   footerClassName?: string;
   hoverable?: boolean;
   bordered?: boolean;
+  animationDelay?: number;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -26,15 +27,20 @@ const Card: React.FC<CardProps> = ({
   footerClassName = '',
   hoverable = false,
   bordered = true,
+  animationDelay,
 }) => {
+  const animationStyle = animationDelay !== undefined ? 
+    { animationDelay: `${animationDelay}s` } : {};
+    
   return (
     <div 
       className={`
-        bg-slate-800 rounded-xl overflow-hidden shadow-md
+        bg-slate-800 rounded-xl overflow-hidden shadow-md animate-slide-up
         ${bordered ? 'border border-slate-700' : ''}
-        ${hoverable ? 'transition-all duration-300 hover:shadow-lg hover:translate-y-[-2px]' : ''}
+        ${hoverable ? 'transition-all duration-300 hover:shadow-lg hover:-translate-y-1' : ''}
         ${className}
       `}
+      style={animationStyle}
     >
       {(title || icon) && (
         <div className={`px-5 py-4 flex items-center ${subtitle ? '' : 'border-b border-slate-700'} ${headerClassName}`}>

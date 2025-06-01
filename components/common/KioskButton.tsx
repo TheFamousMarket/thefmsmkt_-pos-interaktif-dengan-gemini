@@ -41,11 +41,10 @@ const KioskButton: React.FC<KioskButtonProps> = ({
   };
 
   const widthStyle = fullWidth ? 'w-full' : '';
-  const loadingStateStyle = isLoading ? 'opacity-80' : '';
 
   return (
     <button 
-      className={`${baseStyle} ${variantStyles[variant]} ${sizeStyles[size]} ${widthStyle} ${loadingStateStyle} ${className}`}
+      className={`${baseStyle} ${variantStyles[variant]} ${sizeStyles[size]} ${widthStyle} ${className}`}
       disabled={isLoading || props.disabled}
       aria-busy={isLoading}
       {...props}

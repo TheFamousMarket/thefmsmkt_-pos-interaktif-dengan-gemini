@@ -15,13 +15,13 @@ const Sidebar: React.FC<SidebarProps> = ({ onCloseMobile }) => {
     <aside className="h-full bg-slate-800 text-stone-200 flex flex-col overflow-hidden">
       {/* Header with logo and close button for mobile */}
       <div className="p-4 flex items-center justify-between border-b border-slate-700">
-        <div className="text-2xl font-bold text-white">
+        <div className="text-2xl font-bold text-white animate-pulse">
           {translate('app_title_short')}
         </div>
         {onCloseMobile && (
           <button 
             onClick={onCloseMobile}
-            className="md:hidden text-stone-400 hover:text-white p-1 rounded-md"
+            className="md:hidden text-stone-400 hover:text-white p-1 rounded-md transition-colors"
             aria-label="Close sidebar"
           >
             <XMarkIcon className="h-6 w-6" />
@@ -32,7 +32,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCloseMobile }) => {
       {/* Navigation menu */}
       <nav className="flex-grow overflow-y-auto py-4 px-3">
         <div className="space-y-1">
-          {sidebarMenuItems.map((item) => (
+          {sidebarMenuItems.map((item, index) => (
             <NavLink
               key={item.id}
               to={item.path}
@@ -43,6 +43,7 @@ const Sidebar: React.FC<SidebarProps> = ({ onCloseMobile }) => {
                     : 'text-stone-300 hover:bg-slate-700 hover:text-white'
                 }`
               }
+              style={{ animationDelay: `${index * 0.05}s` }}
               aria-current={({ isActive }) => (isActive ? 'page' : undefined)}
             >
               <span className="mr-3 text-lg">{item.icon}</span>

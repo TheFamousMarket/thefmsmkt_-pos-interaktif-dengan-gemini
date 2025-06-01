@@ -26,21 +26,21 @@ const Loader: React.FC<LoaderProps> = ({
   };
 
   const spinner = (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center animate-fade-in">
       <div
         className={`rounded-full animate-spin ${sizeClasses[size]} ${colorClasses[color]}`}
         role="status"
         aria-label="Loading"
       />
       {text && (
-        <p className="mt-3 text-sm text-stone-300">{text}</p>
+        <p className="mt-3 text-sm text-stone-300 animate-pulse">{text}</p>
       )}
     </div>
   );
 
   if (fullScreen) {
     return (
-      <div className="fixed inset-0 bg-slate-900 bg-opacity-75 flex items-center justify-center z-50">
+      <div className="fixed inset-0 bg-slate-900 bg-opacity-75 flex items-center justify-center z-50 animate-fade-in">
         {spinner}
       </div>
     );

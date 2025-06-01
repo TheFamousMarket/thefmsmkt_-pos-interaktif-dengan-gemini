@@ -19,13 +19,13 @@ const PageHeader: React.FC<PageHeaderProps> = ({
   icon,
 }) => {
   return (
-    <div className="mb-6">
+    <div className="mb-6 animate-fade-in">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center mb-4 sm:mb-0">
           {backButton && (
             <button
               onClick={backButton.onClick}
-              className="mr-4 text-stone-300 hover:text-white flex items-center"
+              className="mr-4 text-stone-300 hover:text-white flex items-center transition-colors"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -60,7 +60,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
       </div>
       
       <div className="h-1 w-full bg-slate-800 mt-6">
-        <div className="h-1 w-24 bg-blue-600 rounded-r"></div>
+        <div className="h-1 w-24 bg-blue-600 rounded-r animate-pulse"></div>
       </div>
     </div>
   );

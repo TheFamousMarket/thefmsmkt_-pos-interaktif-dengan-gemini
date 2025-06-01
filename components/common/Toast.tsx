@@ -65,8 +65,9 @@ const Toast: React.FC<ToastProps> = ({
 
   return (
     <div 
-      className={`flex items-center p-4 mb-3 rounded-md shadow-lg animate-toast-slide-in ${getBgColor()}`}
+      className={`flex items-center p-4 mb-3 rounded-md shadow-lg animate-slide-up ${getBgColor()}`}
       role="alert"
+      style={{ animationDuration: '0.3s' }}
     >
       <div className="flex-shrink-0 mr-3">
         {getIcon()}
