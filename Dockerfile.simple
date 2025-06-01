@@ -1,0 +1,18 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+# Copy built files and server
+COPY dist/ ./dist/
+COPY server.js .
+COPY package.json .
+
+# Install only production dependencies
+RUN npm install --production
+
+# Expose the port
+ENV PORT=8080
+EXPOSE 8080
+
+# Start the server
+CMD ["node", "server.js"]
