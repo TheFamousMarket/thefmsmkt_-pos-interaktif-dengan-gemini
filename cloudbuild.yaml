@@ -1,10 +1,10 @@
 steps:
-# Build using buildpacks with the exact command
+# Build using buildpacks
 - name: "gcr.io/k8s-skaffold/pack"
   entrypoint: "pack"
   args:
   - "build"
-  - "gcr.io/ai-qr-genius/github.com/thefamousmarket/thefmsmkt_-pos-interaktif-dengan-gemini:$COMMIT_SHA"
+  - "gcr.io/ai-qr-genius/thefmsmkt-pos:$COMMIT_SHA"
   - "--builder=gcr.io/buildpacks/builder"
   - "--publish"
 
@@ -15,16 +15,13 @@ steps:
   - "run"
   - "deploy"
   - "thefmsmkt-pos"
-  - "--image=gcr.io/ai-qr-genius/github.com/thefamousmarket/thefmsmkt_-pos-interaktif-dengan-gemini:$COMMIT_SHA"
+  - "--image=gcr.io/ai-qr-genius/thefmsmkt-pos:$COMMIT_SHA"
   - "--region=us-central1"
   - "--platform=managed"
   - "--allow-unauthenticated"
 
 images:
-- "gcr.io/ai-qr-genius/github.com/thefamousmarket/thefmsmkt_-pos-interaktif-dengan-gemini:$COMMIT_SHA"
+- "gcr.io/ai-qr-genius/thefmsmkt-pos:$COMMIT_SHA"
 
 options:
   logging: CLOUD_LOGGING_ONLY
-  env:
-  - "COMMIT_SHA=$COMMIT_SHA"
-  - "PROJECT_ID=$PROJECT_ID"
