@@ -11,9 +11,12 @@ RUN npm install
 # Build the application
 RUN npm run build
 
+# Install serve to serve static files
+RUN npm install -g serve
+
 # Expose the port
 ENV PORT=8080
 EXPOSE 8080
 
 # Start the server
-CMD ["node", "server.js"]
+CMD ["serve", "-s", "dist", "-l", "8080"]
