@@ -1,4 +1,13 @@
 steps:
+# Set up authentication with the service account key
+- name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+  entrypoint: "bash"
+  args:
+  - "-c"
+  - |
+    echo "Activating service account"
+    gcloud auth activate-service-account --key-file=$$GOOGLE_APPLICATION_CREDENTIALS
+
 # Build using buildpacks
 - name: "gcr.io/k8s-skaffold/pack"
   entrypoint: "pack"
@@ -25,3 +34,5 @@ images:
 
 options:
   logging: CLOUD_LOGGING_ONLY
+  env:
+  - "GOOGLE_APPLICATION_CREDENTIALS=../../Desktop/ai-qr-genius-43744b7f346b.json"
