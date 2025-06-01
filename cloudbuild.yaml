@@ -25,3 +25,6 @@ images:
 
 options:
   logging: CLOUD_LOGGING_ONLY
+  env:
+  - "COMMIT_SHA=$COMMIT_SHA"
+  - "PROJECT_ID=$PROJECT_ID"
