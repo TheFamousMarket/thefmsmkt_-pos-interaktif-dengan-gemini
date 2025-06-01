@@ -31,33 +31,60 @@ const VisionCheckoutPage: React.FC = () => {
 
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
 
+  // Helper: Calculate price for weighted or standard product
+  const calculatePrice = useCallback((product: Product, quantity: number, weight?: number) => {
+    if (product.requiresScale && weight && product.pricePerUnit) {
+      return product.pricePerUnit * weight * quantity;
+    }
+    return product.price * quantity;
+  }, []);
+
+  // Helper: Build Product payload for Cart
+  const buildProductPayload = useCallback((item: RecognizedItem): Product => {
+    const payload: Product = {
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      category: item.category,
+      image: item.image,
+      stock: item.stock,
+      sku: item.sku,
+      isVisuallyAmbiguous: item.isVisuallyAmbiguous,
+      similarProductIds: item.similarProductIds,
+      requiresScale: item.requiresScale,
+      pricePerUnit: item.pricePerUnit,
+      unitName: item.unitName,
+    };
+    if (item.weight !== undefined && item.requiresScale) {
+      (payload as any).weight = item.weight;
+    }
+    return payload;
+  }, []);
+
   // Simulation interval
   useEffect(() => {
     let scanInterval: NodeJS.Timeout;
     if (isScanning) {
       scanInterval = setInterval(() => {
-        // Simulate detecting a random product
         const randomIndex = Math.floor(Math.random() * mockProducts.length);
         const detectedProduct = mockProducts[randomIndex];
-        
-        // Simulate processing delay
-        const delay = Math.random() * 1500 + 500; // 0.5s to 2s
+        const delay = Math.random() * 1500 + 500;
         setTimeout(() => {
-            if (!isScanning) return; // Check if scanning stopped during delay
-            processDetectedProduct(detectedProduct);
+          if (!isScanning) return;
+          processDetectedProduct(detectedProduct);
         }, delay);
-
-      }, 3000); // Scan every 3 seconds
+      }, 3000);
     }
     return () => clearInterval(scanInterval);
-  }, [isScanning, mockProducts]);
+  // Only depend on isScanning
+  }, [isScanning]);
 
-  const processDetectedProduct = (product: Product) => {
+  const processDetectedProduct = useCallback((product: Product) => {
     if (product.requiresScale) {
       setCurrentItemForWeight(product);
       setShowWeightModal(true);
       showToast(translate('toast_weight_item_detected', { itemName: product.name }), 'info');
-    } else if (product.isVisuallyAmbiguous && product.similarProductIds && product.similarProductIds.length > 0) {
+    } else if (product.isVisuallyAmbiguous && product.similarProductIds?.length) {
       const similarProds = mockProducts.filter(p => product.similarProductIds?.includes(p.id));
       setCurrentItemForAmbiguity(product);
       setSimilarOptionsForAmbiguity(similarProds);
@@ -66,128 +93,88 @@ const VisionCheckoutPage: React.FC = () => {
     } else {
       addOrUpdateRecognizedItem(product);
     }
-  };
+  }, [showToast, translate]);
 
-  const addOrUpdateRecognizedItem = (product: Product, quantity: number = 1, weight?: number) => {
+  const addOrUpdateRecognizedItem = useCallback((product: Product, quantity: number = 1, weight?: number) => {
     setRecognizedItems(prevItems => {
-      const existingItemIndex = prevItems.findIndex(item => item.id === product.id && item.weight === weight); // consider weight for uniqueness if applicable
-      
-      let calculatedPrice = product.price;
-      if (product.requiresScale && weight && product.pricePerUnit) {
-        calculatedPrice = product.pricePerUnit * weight;
-      }
+      const existingItemIndex = prevItems.findIndex(item => item.id === product.id && item.weight === weight);
+      const calculatedPrice = calculatePrice(product, 1, weight);
 
       if (existingItemIndex > -1) {
         const updatedItems = [...prevItems];
         updatedItems[existingItemIndex].quantity += quantity;
-        if (product.requiresScale && weight && product.pricePerUnit) { // Update price if quantity of weighted item changes (though typically 1)
-             updatedItems[existingItemIndex].calculatedPrice = (product.pricePerUnit * weight) * updatedItems[existingItemIndex].quantity;
-        } else {
-             updatedItems[existingItemIndex].calculatedPrice = product.price * updatedItems[existingItemIndex].quantity;
-        }
+        updatedItems[existingItemIndex].calculatedPrice = calculatePrice(product, updatedItems[existingItemIndex].quantity, weight);
         showToast(translate('toast_item_updated_vision', { itemName: product.name }), 'success');
         return updatedItems;
       } else {
         showToast(translate('toast_item_added_vision', { itemName: product.name }), 'success');
         const newItem: RecognizedItem = {
           ...product,
-          quantity: quantity,
-          weight: weight,
-          // Price for a single unit/scan. Total is calculated in panel.
-          price: product.requiresScale && weight && product.pricePerUnit ? (product.pricePerUnit * weight) : product.price,
-          calculatedPrice: product.requiresScale && weight && product.pricePerUnit ? (product.pricePerUnit * weight) : product.price,
+          quantity,
+          weight,
+          price: calculatedPrice,
+          calculatedPrice,
         };
         return [...prevItems, newItem];
       }
     });
-  };
-  
-  const handleUpdateQuantity = (itemId: number, newQuantity: number) => {
+  }, [calculatePrice, showToast, translate]);
+
+  const handleUpdateQuantity = useCallback((itemId: number, newQuantity: number) => {
     setRecognizedItems(prevItems =>
       prevItems.map(item => {
         if (item.id === itemId) {
           const updatedItem = { ...item, quantity: newQuantity };
-          if (item.requiresScale && item.weight && item.pricePerUnit) {
-            updatedItem.calculatedPrice = (item.pricePerUnit * item.weight) * newQuantity;
-          } else {
-            updatedItem.calculatedPrice = item.price * newQuantity;
-          }
+          updatedItem.calculatedPrice = calculatePrice(item, newQuantity, item.weight);
           return updatedItem;
         }
         return item;
-      }).filter(item => item.quantity > 0) // Ensure items with 0 quantity are removed
+      }).filter(item => item.quantity > 0)
     );
-  };
+  }, [calculatePrice]);
 
-  const handleRemoveItem = (itemId: number) => {
+  const handleRemoveItem = useCallback((itemId: number) => {
     setRecognizedItems(prevItems => prevItems.filter(item => item.id !== itemId));
-  };
+  }, []);
 
-  const handleConfirmAmbiguous = (selectedProduct: Product) => {
+  const handleConfirmAmbiguous = useCallback((selectedProduct: Product) => {
     addOrUpdateRecognizedItem(selectedProduct);
     setShowAmbiguousModal(false);
-  };
+  }, [addOrUpdateRecognizedItem]);
 
-  const handleConfirmWeight = (product: Product, weight: number) => {
-    addOrUpdateRecognizedItem(product, 1, weight); // Weighted items usually added one at a time
+  const handleConfirmWeight = useCallback((product: Product, weight: number) => {
+    addOrUpdateRecognizedItem(product, 1, weight);
     setShowWeightModal(false);
-  };
+  }, [addOrUpdateRecognizedItem]);
 
-  const handleClearTray = () => {
+  const handleClearTray = useCallback(() => {
     setRecognizedItems([]);
     showToast(translate('toast_cleared_tray'), 'info');
-  };
+  }, [showToast, translate]);
 
-  const handleProceedToPayment = () => {
+  const handleProceedToPayment = useCallback(() => {
     if (recognizedItems.length === 0) {
       showToast(translate('toast_vision_cart_empty_payment'), 'warning');
       return;
     }
-    clearMainCart(); 
-    
+    clearMainCart();
     recognizedItems.forEach(item => {
-      // Construct a Product object that addToCart expects.
-      // The 'price' should be the price of a single "unit" or "scan".
-      const productPayload: Product = {
-          id: item.id,
-          name: item.name,
-          price: item.price, // This is price per scan from RecognizedItem
-          category: item.category,
-          image: item.image,
-          stock: item.stock, 
-          sku: item.sku,
-          isVisuallyAmbiguous: item.isVisuallyAmbiguous,
-          similarProductIds: item.similarProductIds,
-          requiresScale: item.requiresScale,
-          pricePerUnit: item.pricePerUnit,
-          unitName: item.unitName,
-      };
-
-      // If the original item had a weight, add it to the payload
-      // so CartContext's spread operator can pick it up for CartItem.
-      if (item.weight !== undefined && item.requiresScale) {
-          (productPayload as any).weight = item.weight;
-      }
-
-      // Call addToCart for each unit of quantity
+      const productPayload = buildProductPayload(item);
       for (let i = 0; i < item.quantity; i++) {
-          addToMainCart(productPayload);
+        addToMainCart(productPayload);
       }
     });
     setIsPaymentModalOpen(true);
-  };
+  }, [recognizedItems, clearMainCart, addToMainCart, showToast, translate, buildProductPayload]);
 
-  const handlePaymentSuccess = () => {
+  const handlePaymentSuccess = useCallback(() => {
     setIsPaymentModalOpen(false);
-    setRecognizedItems([]); // Clear tray after successful payment
+    setRecognizedItems([]);
     navigate('/dashboard');
-  };
-  
-  const subtotal = recognizedItems.reduce((sum, item) => {
-    const price = item.calculatedPrice ?? (item.price * item.quantity);
-    return sum + price;
-  }, 0);
-  const tax = subtotal * 0.06; // Example 6% tax
+  }, [navigate]);
+
+  const subtotal = recognizedItems.reduce((sum, item) => sum + (item.calculatedPrice ?? (item.price * item.quantity)), 0);
+  const tax = subtotal * 0.06;
   const grandTotal = subtotal + tax;
 
 

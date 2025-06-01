@@ -32,6 +32,7 @@ const ShelfDisplay: React.FC<ShelfDisplayProps> = ({ config, monitoredProducts }
             <div 
                 className={`grid gap-2`} 
                 style={{ gridTemplateColumns: `repeat(${shelf.columns}, minmax(0, 1fr))` }}
+                aria-label={shelf.name}
             >
               {Array.from({ length: shelf.rows * shelf.columns }).map((_, cellIndex) => {
                 const rowIndex = Math.floor(cellIndex / shelf.columns);

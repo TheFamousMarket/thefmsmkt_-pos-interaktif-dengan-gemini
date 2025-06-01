@@ -82,6 +82,12 @@ const PaymentModal: React.FC<PaymentModalProps> = ({ isOpen, onClose, onPaymentS
          showToast(translate('toast_whatsapp_sim', { whatsappNumber: customerWhatsapp.trim() }), 'info', 4000);
     }
     
+    // Email validation
+    if (emailReceipt && customerEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)) {
+      showToast(translate('toast_invalid_email'), 'warning');
+      return;
+    }
+    
     // Simulate generating analytics
     simulateGenerateAnalytics();
 

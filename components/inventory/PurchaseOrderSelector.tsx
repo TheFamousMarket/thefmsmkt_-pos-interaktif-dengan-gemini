@@ -20,6 +20,7 @@ const PurchaseOrderSelector: React.FC<PurchaseOrderSelectorProps> = ({ purchaseO
       </label>
       <select
         id="po-selector"
+        aria-label={translate('po_selection_label')}
         value={selectedPoId || ''}
         onChange={(e) => onPoSelect(e.target.value)}
         className="w-full p-3 kiosk-input bg-slate-600 border-slate-500 rounded-lg focus:ring-green-500 focus:border-green-500 text-stone-100 mb-3"

@@ -1,55 +1,86 @@
+import React, { useEffect } from 'react';
+import { 
+  CheckCircleIcon, 
+  ExclamationCircleIcon, 
+  InformationCircleIcon, 
+  XMarkIcon 
+} from '@heroicons/react/24/solid';
 
-import React from 'react';
-import { useToast } from '../../contexts/ToastContext';
-import { CheckCircleIcon, XCircleIcon, InformationCircleIcon, ExclamationTriangleIcon } from '@heroicons/react/24/solid';
+export type ToastType = 'success' | 'error' | 'info' | 'warning';
 
-const Toast: React.FC = () => {
-  const { toasts } = useToast();
+interface ToastProps {
+  id: string;
+  type: ToastType;
+  message: string;
+  duration?: number;
+  onClose: (id: string) => void;
+}
 
-  if (!toasts.length) {
-    return null;
-  }
+const Toast: React.FC<ToastProps> = ({
+  id,
+  type,
+  message,
+  duration = 5000,
+  onClose,
+}) => {
+  useEffect(() => {
+    if (duration > 0) {
+      const timer = setTimeout(() => {
+        onClose(id);
+      }, duration);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [id, duration, onClose]);
+
+  const getIcon = () => {
+    switch (type) {
+      case 'success':
+        return <CheckCircleIcon className="h-5 w-5 text-emerald-400" />;
+      case 'error':
+        return <ExclamationCircleIcon className="h-5 w-5 text-rose-400" />;
+      case 'warning':
+        return <ExclamationCircleIcon className="h-5 w-5 text-amber-400" />;
+      case 'info':
+        return <InformationCircleIcon className="h-5 w-5 text-blue-400" />;
+      default:
+        return null;
+    }
+  };
+
+  const getBgColor = () => {
+    switch (type) {
+      case 'success':
+        return 'bg-emerald-600 bg-opacity-20 border-l-4 border-emerald-500';
+      case 'error':
+        return 'bg-rose-600 bg-opacity-20 border-l-4 border-rose-500';
+      case 'warning':
+        return 'bg-amber-600 bg-opacity-20 border-l-4 border-amber-500';
+      case 'info':
+        return 'bg-blue-600 bg-opacity-20 border-l-4 border-blue-500';
+      default:
+        return 'bg-slate-700';
+    }
+  };
 
   return (
-    <div className="fixed bottom-5 right-5 z-[1000] space-y-3">
-      {toasts.map((toast) => {
-        let bgColor = 'bg-slate-700';
-        let textColor = 'text-white';
-        let IconComponent = InformationCircleIcon;
-
-        switch (toast.type) {
-          case 'success':
-            bgColor = 'bg-green-500';
-            IconComponent = CheckCircleIcon;
-            break;
-          case 'error':
-            bgColor = 'bg-red-500';
-            IconComponent = XCircleIcon;
-            break;
-          case 'warning':
-            bgColor = 'bg-amber-500';
-            IconComponent = ExclamationTriangleIcon;
-            break;
-        }
-
-        return (
-          <div
-            key={toast.id}
-            className={`flex items-center p-4 rounded-lg shadow-lg ${bgColor} ${textColor} min-w-[250px] max-w-md animate-fadeIn`}
-            role="alert"
-          >
-            <IconComponent className="h-6 w-6 mr-3 flex-shrink-0" />
-            <span className="text-sm font-medium">{toast.message}</span>
-          </div>
-        );
-      })}
-      <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fadeIn { animation: fadeIn 0.3s ease-out; }
-      `}</style>
+    <div 
+      className={`flex items-center p-4 mb-3 rounded-md shadow-lg animate-toast-slide-in ${getBgColor()}`}
+      role="alert"
+    >
+      <div className="flex-shrink-0 mr-3">
+        {getIcon()}
+      </div>
+      <div className="flex-grow text-sm text-white">
+        {message}
+      </div>
+      <button
+        onClick={() => onClose(id)}
+        className="flex-shrink-0 ml-3 text-stone-300 hover:text-white transition-colors"
+        aria-label="Close"
+      >
+        <XMarkIcon className="h-5 w-5" />
+      </button>
     </div>
   );
 };

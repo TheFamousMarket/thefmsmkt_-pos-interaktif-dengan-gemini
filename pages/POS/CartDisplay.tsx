@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useCart } from '../../contexts/CartContext';
 import { useLanguage } from '../../contexts/LanguageContext';
@@ -8,6 +7,7 @@ import KioskInput from '../../components/common/KioskInput';
 import { XCircleIcon, SparklesIcon } from '@heroicons/react/24/solid';
 import { getRelatedProductSuggestions } from '../../services/geminiService';
 import { mockProducts } from '../../constants/mockData';
+// Consider: import { useDebounce } from 'use-debounce'; for discount input
 
 
 interface CartDisplayProps {
@@ -105,7 +105,9 @@ const CartDisplay: React.FC<CartDisplayProps> = ({ onPayNow }) => {
         <span className="text-md text-stone-300">{translate('pos_order_no')}: <span className="font-semibold">#1057</span></span>
       </div>
       <div className="mb-4">
-        <button className="text-md text-green-400 hover:underline">{translate('pos_customer_walk_in')}</button>
+        <KioskButton variant="secondary" className="text-md text-green-400 hover:underline p-0 bg-transparent border-none shadow-none" style={{background: 'none', boxShadow: 'none'}}>
+          {translate('pos_customer_walk_in')}
+        </KioskButton>
       </div>
 
       <div className="flex-grow space-y-2 overflow-y-auto max-h-60 sm:max-h-72 pr-2 mb-4">
@@ -141,13 +143,14 @@ const CartDisplay: React.FC<CartDisplayProps> = ({ onPayNow }) => {
               </div>
               <div className="flex items-center space-x-3">
                 <span className="font-semibold text-md text-stone-100">RM {(item.price * item.quantity).toFixed(2)}</span>
-                <button 
+                <KioskButton 
+                  variant="danger"
                   onClick={() => removeFromCart(item.id)} 
-                  className="text-red-400 hover:text-red-300"
+                  className="text-red-400 hover:text-red-300 !p-1.5"
                   aria-label={`Remove ${item.name} from cart`}
                 >
                   <XCircleIcon className="h-5 w-5" />
-                </button>
+                </KioskButton>
               </div>
             </div>
           ))

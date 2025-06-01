@@ -28,6 +28,13 @@ const parseJsonFromText = (text: string): any => {
 };
 
 
+/**
+ * Generates a product description using Gemini AI.
+ * @param productName - Name of the product.
+ * @param category - Product category.
+ * @param keywords - Relevant keywords.
+ * @returns GeminiResponse<string>
+ */
 export const generateProductDescription = async (productName: string, category: string, keywords: string): Promise<GeminiResponse<string>> => {
   if (!API_KEY) return { data: null, error: "API Key not configured. Please set the VITE_GEMINI_API_KEY environment variable." };
   const prompt = `Anda adalah pembantu AI untuk sistem POS. Jana deskripsi produk yang menarik dan ringkas (sekitar 2-3 ayat) untuk produk berikut:\nNama Produk: ${productName}\nKategori: ${category || 'Tidak dinyatakan'}\nKata Kunci: ${keywords || 'Tiada'}\n\nFormatkan deskripsi dengan baik. Berikan hanya deskripsi produk, tanpa pengenalan tambahan.`;
@@ -49,6 +56,13 @@ export const generateProductDescription = async (productName: string, category: 
   }
 };
 
+
+/**
+ * Gets related product suggestions using Gemini AI.
+ * @param cartItemNames - Names of items in the cart.
+ * @param productCatalogNames - Names of products in the catalog.
+ * @returns GeminiResponse<string[]>
+ */
 export const getRelatedProductSuggestions = async (cartItemNames: string, productCatalogNames: string): Promise<GeminiResponse<string[]>> => {
   if (!API_KEY) return { data: null, error: "API Key not configured. Please set the VITE_GEMINI_API_KEY environment variable." };
   const prompt = `Pelanggan ini mempunyai item berikut dalam troli: ${cartItemNames}. Cadangkan 2-3 produk tambahan yang mungkin diminati pelanggan ini dari senarai produk katalog berikut: ${productCatalogNames}. Berikan cadangan sebagai senarai ringkas, setiap cadangan pada baris baru, dimulai dengan tanda sempang (-). Contoh: - Produk X. Berikan hanya senarai produk, tanpa pengenalan tambahan.`;
@@ -74,6 +88,12 @@ export const getRelatedProductSuggestions = async (cartItemNames: string, produc
   }
 };
 
+
+/**
+ * Summarizes report data using Gemini AI.
+ * @param reportData - The report data to summarize.
+ * @returns GeminiResponse<string>
+ */
 export const summarizeReportData = async (reportData: string): Promise<GeminiResponse<string>> => {
   if (!API_KEY) return { data: null, error: "API Key not configured. Please set the VITE_GEMINI_API_KEY environment variable." };
   const prompt = `Anda adalah penganalisis data AI. Berdasarkan data laporan berikut, berikan ringkasan eksekutif (2-3 ayat utama) mengenai tren jualan dan pemerhatian penting:\n${reportData}\n\nFokus pada tren utama dan sebarang anomali jika ada. Berikan hanya ringkasan, tanpa pengenalan tambahan.`;
@@ -95,6 +115,13 @@ export const summarizeReportData = async (reportData: string): Promise<GeminiRes
   }
 };
 
+
+/**
+ * Generates a demographic insight summary using Gemini AI.
+ * @param analytics - The customer analytics data.
+ * @param currentLang - The current language ('ms' or 'en').
+ * @returns GeminiResponse<string>
+ */
 export const getDemographicInsightSummary = async (analytics: AnonymizedCustomerAnalytics, currentLang: 'ms' | 'en'): Promise<GeminiResponse<string>> => {
   if (!API_KEY) return { data: null, error: "API Key not configured. Please set the VITE_GEMINI_API_KEY environment variable." };
   
@@ -127,6 +154,11 @@ export const getDemographicInsightSummary = async (analytics: AnonymizedCustomer
 };
 
 
+/**
+ * Gets structured data example from Gemini AI.
+ * @param promptText - The prompt text to send to Gemini.
+ * @returns GeminiResponse<any>
+ */
 export const getStructuredDataExample = async (promptText: string): Promise<GeminiResponse<any>> => {
   if (!API_KEY) return { data: null, error: "API Key not configured. Please set the VITE_GEMINI_API_KEY environment variable." };
   try {

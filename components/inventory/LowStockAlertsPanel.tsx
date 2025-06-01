@@ -10,7 +10,7 @@ const LowStockAlertsPanel: React.FC<LowStockAlertsPanelProps> = ({ lowStockItems
   const { translate } = useLanguage();
 
   return (
-    <div className="bg-slate-700 p-4 rounded-lg shadow">
+    <div className="bg-slate-700 p-4 rounded-lg shadow" aria-live="polite">
       <h3 className="text-lg font-semibold text-amber-400 mb-2">{translate('inventory_monitoring_low_stock_title')}</h3>
       <p className="text-xs text-stone-400 mb-3">{translate('inventory_monitoring_low_stock_desc')}</p>
       {lowStockItems.length === 0 ? (

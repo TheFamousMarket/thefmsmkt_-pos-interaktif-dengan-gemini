@@ -1,163 +1,94 @@
-<<<<<<< HEAD
-# Interactive POS System with Gemini AI
-=======
-# Create an improved README.md
-echo "# Interactive POS System with Gemini AI
->>>>>>> caf056b5d331ec05e4cdd488b88a7a374c0f167b
+# TheFMSMKT POS - Interactive POS with Gemini
 
-A comprehensive Point of Sale (POS) system with WhatsApp integration, Vision AI capabilities, and Gemini AI for smart suggestions and analytics.
+An interactive Point of Sale system enhanced with Google Gemini AI capabilities.
 
 ## Features
 
-- Interactive POS interface with product catalog
-- WhatsApp Business API integration for customer notifications
-- Google Vision AI for product recognition
-- Gemini AI for product descriptions and recommendations
-- Inventory management with visual stock-in process
-- CRM functionality with customer analytics
-- Multi-language support (English and Bahasa Malaysia)
+- Modern POS interface with product scanning and checkout
+- Vision-based product recognition using Google Vision AI
+- WhatsApp integration for notifications and customer interactions
+- Inventory management with real-time tracking
+- Employee management system
+- Sales reporting and analytics
+- E-Invoice generation and management
 
-## Setup Instructions
-<<<<<<< HEAD
+## Tech Stack
+
+- React 19 with TypeScript
+- Vite for frontend build
+- Express.js for backend server
+- Google Cloud services (Vision AI, Cloud Run)
+- Google Gemini AI for intelligent interactions
+- WhatsApp Business API integration
+
+## Getting Started
 
 ### Prerequisites
-- Node.js
-- npm
-- WhatsApp Business API account
-- Google Cloud Vision API credentials
-- Gemini API key
+
+- Node.js 18 or higher
+- Google Cloud account with Vision AI and Gemini API enabled
+- WhatsApp Business API access
 
 ### Installation
 
-1. Clone the repository:
-   \\\
-   git clone https://github.com/TheFamousMarket/thefmsmkt_-pos-interaktif-dengan-gemini.git
-   cd thefmsmkt_-pos-interaktif-dengan-gemini
-   \\\
+1. Clone the repository
+   ```
+   git clone https://github.com/yourusername/thefmsmkt-pos.git
+   cd thefmsmkt-pos
+   ```
 
-2. Install dependencies:
-   \\\
+2. Install dependencies
+   ```
    npm install
-   \\\
+   ```
 
-3. Set up environment variables in \.env.local\:
-   \\\
-   VITE_GEMINI_API_KEY=your_gemini_api_key
-   VITE_WHATSAPP_TOKEN=your_whatsapp_token
-   VITE_META_APP_ID=your_meta_app_id
-   VITE_META_APP_SECRET=your_meta_app_secret
-   VITE_WEBHOOK_VERIFY_TOKEN=your_webhook_verify_token
-   VITE_GOOGLE_CLOUD_CREDENTIALS_PATH=path_to_credentials_json
-   \\\
+3. Create a `.env.local` file based on `.env.example` and add your API keys
 
-4. Start the development server:
-   \\\
+4. Start the development server
+   ```
    npm run dev
-   \\\
+   ```
 
-5. Start the webhook server:
-   \\\
-   cd server
-   npm install
-   npm start
-   \\\
+### Production Deployment
 
-## Deployment
+The application is configured for deployment to Google Cloud Run:
 
-To deploy to thefmsmkt.com:
+1. Build the Docker image
+   ```
+   docker build -t gcr.io/your-project-id/thefmsmkt-pos:latest .
+   ```
 
-1. Build the application:
-   \\\
-   npm run build
-   \\\
+2. Push to Google Container Registry
+   ```
+   docker push gcr.io/your-project-id/thefmsmkt-pos:latest
+   ```
 
-2. Deploy the \dist\ folder and server directory to your hosting provider
+3. Deploy to Cloud Run
+   ```
+   gcloud run deploy thefmsmkt-pos --image gcr.io/your-project-id/thefmsmkt-pos:latest --platform managed --allow-unauthenticated
+   ```
 
-## WhatsApp Webhook Setup
+Alternatively, use the GitHub Actions workflow by setting up the required secrets:
+- `GCP_PROJECT_ID`: Your Google Cloud project ID
+- `GCP_SA_KEY`: Your service account key JSON (base64 encoded)
 
-1. Use ngrok to expose your webhook server:
-   \\\
-   ngrok http 3001
-   \\\
+## Development
 
-2. Configure webhook in Meta Developer Dashboard:
-   - Callback URL: https://your-domain.com/webhook
-   - Verify Token: pos_whatsapp_webhook_verify_token
-   - Subscribe to: messages, message_status_updates
+### Server
+
+The backend server handles:
+- Serving the static frontend files
+- WhatsApp webhook integration
+- WebSocket connections for real-time updates
+
+### Frontend
+
+The React frontend provides:
+- POS interface with product scanning
+- Inventory management screens
+- Employee management
+- Sales reporting and analytics
 
 ## License
 
-© 2025 The Famous Market. All rights reserved.
-
-=======
-
-### Prerequisites
-- Node.js
-- npm
-- WhatsApp Business API account
-- Google Cloud Vision API credentials
-- Gemini API key
-
-### Installation
-
-1. Clone the repository:
-   \`\`\`
-   git clone https://github.com/TheFamousMarket/thefmsmkt_-pos-interaktif-dengan-gemini.git
-   cd thefmsmkt_-pos-interaktif-dengan-gemini
-   \`\`\`
-
-2. Install dependencies:
-   \`\`\`
-   npm install
-   \`\`\`
-
-3. Set up environment variables in \`.env.local\`:
-   \`\`\`
-   VITE_GEMINI_API_KEY=your_gemini_api_key
-   VITE_WHATSAPP_TOKEN=your_whatsapp_token
-   VITE_META_APP_ID=your_meta_app_id
-   VITE_META_APP_SECRET=your_meta_app_secret
-   VITE_WEBHOOK_VERIFY_TOKEN=your_webhook_verify_token
-   VITE_GOOGLE_CLOUD_CREDENTIALS_PATH=path_to_credentials_json
-   \`\`\`
-
-4. Start the development server:
-   \`\`\`
-   npm run dev
-   \`\`\`
-
-5. Start the webhook server:
-   \`\`\`
-   cd server
-   npm install
-   npm start
-   \`\`\`
-
-## Deployment
-
-To deploy to thefmsmkt.com:
-
-1. Build the application:
-   \`\`\`
-   npm run build
-   \`\`\`
-
-2. Deploy the \`dist\` folder and server directory to your hosting provider
-
-## WhatsApp Webhook Setup
-
-1. Use ngrok to expose your webhook server:
-   \`\`\`
-   ngrok http 3001
-   \`\`\`
-
-2. Configure webhook in Meta Developer Dashboard:
-   - Callback URL: https://your-domain.com/webhook
-   - Verify Token: pos_whatsapp_webhook_verify_token
-   - Subscribe to: messages, message_status_updates
-
-## License
-
-© 2025 The Famous Market. All rights reserved.
-" > README.md
->>>>>>> caf056b5d331ec05e4cdd488b88a7a374c0f167b
+This project is licensed under the MIT License - see the LICENSE file for details.

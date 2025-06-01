@@ -78,6 +78,8 @@ const WhatsAppNotification: React.FC<WhatsAppNotificationProps> = ({ orderDetail
           onChange={(e) => setMessage(e.target.value)}
           className="w-full p-2 border rounded-md"
           rows={4}
+          placeholder="Enter your message"
+          title="Message"
         />
       </div>
       

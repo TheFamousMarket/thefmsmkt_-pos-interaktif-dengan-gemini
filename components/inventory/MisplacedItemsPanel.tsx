@@ -10,7 +10,7 @@ const MisplacedItemsPanel: React.FC<MisplacedItemsPanelProps> = ({ misplacedItem
   const { translate } = useLanguage();
 
   return (
-    <div className="bg-slate-700 p-4 rounded-lg shadow">
+    <div className="bg-slate-700 p-4 rounded-lg shadow" aria-live="polite">
       <h3 className="text-lg font-semibold text-purple-400 mb-2">{translate('inventory_monitoring_misplaced_title')}</h3>
       <p className="text-xs text-stone-400 mb-3">{translate('inventory_monitoring_misplaced_desc')}</p>
       {misplacedItems.length === 0 ? (

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import PageHeader from '../../components/common/PageHeader';
 import { useLanguage } from '../../contexts/LanguageContext';
@@ -41,8 +40,12 @@ const InventoryTable: React.FC<{products: Product[]}> = ({ products }) => {
                             <td className="p-3 text-sm text-stone-300">{p.stock}</td>
                             <td className="p-3 text-sm text-stone-300">RM {p.price.toFixed(2)}</td>
                             <td className="p-3 text-sm whitespace-nowrap">
-                                <button className="text-green-400 hover:text-green-300 mr-3 font-medium">{translate('btn_edit')}</button>
-                                <button className="text-red-400 hover:text-red-300 font-medium">{translate('btn_delete')}</button>
+                                <KioskButton variant="secondary" className="mr-3 !p-1.5 !bg-transparent !shadow-none !border-none text-green-400 hover:text-green-300" style={{background: 'none', boxShadow: 'none'}}>
+                                    {translate('btn_edit')}
+                                </KioskButton>
+                                <KioskButton variant="danger" className="!p-1.5 !bg-transparent !shadow-none !border-none text-red-400 hover:text-red-300" style={{background: 'none', boxShadow: 'none'}}>
+                                    {translate('btn_delete')}
+                                </KioskButton>
                             </td>
                         </tr>
                     ))}
@@ -72,8 +75,8 @@ const InventoryPage: React.FC = () => {
 
 
   const handleGenerateDescription = async () => {
-    if (!productName.trim()) {
-      showToast(translate('toast_fill_product_name'), 'warning');
+    if (!productName.trim() || !category.trim()) {
+      showToast(translate('toast_fill_product_name_and_category'), 'warning');
       return;
     }
     setIsGeneratingDesc(true);

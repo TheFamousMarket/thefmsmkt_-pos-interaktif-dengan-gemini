@@ -28,7 +28,7 @@ const ScannedItemsTable: React.FC<ScannedItemsTableProps> = ({ items }) => {
   };
 
   return (
-    <div className="overflow-x-auto bg-slate-700 p-4 rounded-lg shadow">
+    <div className="overflow-x-auto bg-slate-700 p-4 rounded-lg shadow" aria-live="polite">
       <h3 className="text-lg font-semibold text-white mb-3">{translate('vision_stock_in_scanned_items_title')}</h3>
       {items.length === 0 ? (
         <p className="text-stone-400 text-center py-4">{translate('vision_stock_in_status_pending')}...</p>
@@ -36,13 +36,13 @@ const ScannedItemsTable: React.FC<ScannedItemsTableProps> = ({ items }) => {
         <table className="w-full text-left min-w-[700px]">
           <thead className="bg-slate-600">
             <tr>
-              <th className="p-2 text-xs font-semibold tracking-wide">{translate('vision_stock_in_table_product')}</th>
-              <th className="p-2 text-xs font-semibold tracking-wide">{translate('vision_stock_in_table_sku')}</th>
-              <th className="p-2 text-xs font-semibold tracking-wide text-center">{translate('vision_stock_in_table_expected_qty')}</th>
-              <th className="p-2 text-xs font-semibold tracking-wide text-center">{translate('vision_stock_in_table_scanned_qty')}</th>
-              <th className="p-2 text-xs font-semibold tracking-wide text-center">{translate('vision_stock_in_table_discrepancy')}</th>
-              <th className="p-2 text-xs font-semibold tracking-wide">{translate('vision_stock_in_table_expiry')}</th>
-              <th className="p-2 text-xs font-semibold tracking-wide text-center">{translate('vision_stock_in_table_status')}</th>
+              <th scope="col" className="p-2 text-xs font-semibold tracking-wide">{translate('vision_stock_in_table_product')}</th>
+              <th scope="col" className="p-2 text-xs font-semibold tracking-wide">{translate('vision_stock_in_table_sku')}</th>
+              <th scope="col" className="p-2 text-xs font-semibold tracking-wide text-center">{translate('vision_stock_in_table_expected_qty')}</th>
+              <th scope="col" className="p-2 text-xs font-semibold tracking-wide text-center">{translate('vision_stock_in_table_scanned_qty')}</th>
+              <th scope="col" className="p-2 text-xs font-semibold tracking-wide text-center">{translate('vision_stock_in_table_discrepancy')}</th>
+              <th scope="col" className="p-2 text-xs font-semibold tracking-wide">{translate('vision_stock_in_table_expiry')}</th>
+              <th scope="col" className="p-2 text-xs font-semibold tracking-wide text-center">{translate('vision_stock_in_table_status')}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-600">
