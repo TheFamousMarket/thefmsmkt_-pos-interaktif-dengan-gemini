@@ -43,3 +43,5 @@ export const translations = {
     webhook_note: "Nota: Pelayan anda perlu boleh diakses dari internet. Pertimbangkan untuk menggunakan perkhidmatan seperti ngrok untuk pembangunan tempatan."
   }
 };
+
+export const languageStrings = translations;
